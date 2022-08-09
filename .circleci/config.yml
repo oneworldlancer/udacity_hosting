@@ -55,13 +55,24 @@ jobs:
             echo "# TODO: Testing FrontEnd"
   deploy:
     docker:
-      - image: cimg/<language>:<version TAG>
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: "cimg/base:stable"
     steps:
+      - node/install:
+          node-version: '14.15' 
+      - eb/setup
+      - aws-cli/setup
       - checkout
-      - run: my-deploy-commands
+      - run:
+          name: Envs
+          # TODO: Install, build, deploy in both apps
+          command: |
+            echo "# TODO: Install, build, deploy in both apps"
+            echo "# Deploy"
+            npm run deploy
+            echo "# use EB"
+            eb use udagram-api-dev
+            echo "# EB setenvs"
+            eb setenv POSTGRES_HOST=$POSTGRES_HOST DB_PORT=$DB_PORT POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_USERNAME=$POSTGRES_USERNAME POSTGRES_DB=$POSTGRES_DB JWT_SECRET=$JWT_SECRET PORT=$PORT
 
 # Orchestrate our job run sequence
 workflows:
