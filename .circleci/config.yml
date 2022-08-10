@@ -10,10 +10,10 @@ orbs:
 jobs:
   build:
     docker:
-      - image: "cimg/node:14.15"        
+      - image: "cimg/node:14.15"
     steps:
       - node/install:
-          node-version: '14.15'  
+          node-version: "14.15"
       - checkout
       # Use root level package.json to install dependencies in the frontend app
       - run:
@@ -42,7 +42,7 @@ jobs:
           command: |
             echo "TODO: Build the backend API"
             npm run api:build
-            
+
   test:
     docker:
       - image: "cimg/base:stable"
@@ -58,7 +58,7 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - node/install:
-          node-version: '14.15' 
+          node-version: "14.15"
       - eb/setup
       - aws-cli/setup
       - checkout
@@ -91,3 +91,7 @@ workflows:
       - deploy:
           requires:
             - hold
+          filters:
+            branches:
+              only:
+                - main
